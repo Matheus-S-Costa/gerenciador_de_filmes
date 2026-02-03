@@ -30,13 +30,11 @@ export const Home: React.FC = () => {
         type: type?.value,
         });
 
-        // Se o seu MovieResults tem Response (padrão OMDb)
         if (data.Response === 'True') {
         setMovies(data.Search ?? []);
         setErrorMsg(null);
         } else {
         setMovies([]);
-        // Aqui NÃO acessa data.Error se o tipo não permite
         setErrorMsg('Nenhum resultado encontrado.');
         }
     } catch (error: unknown) {
@@ -139,7 +137,6 @@ export const Home: React.FC = () => {
   );
 };
 
-/** ===== styled-components locais (só para a Home) ===== */
 const Page = styled.div`
   max-width: 1200px;
   margin: 0 auto;
