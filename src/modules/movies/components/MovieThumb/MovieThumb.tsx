@@ -77,7 +77,6 @@ const MobieThumbWrapper = styled.article`
   }
 `;
 
-/* poster sem distorcer + proporção boa pra filme */
 const MoviePic = styled.img`
   width: 100%;
   display: block;
@@ -86,7 +85,6 @@ const MoviePic = styled.img`
   background: rgba(0, 0, 0, 0.06);
 `;
 
-/* barra inferior estilo overlay */
 const InfoWrapper = styled.div`
   position: absolute;
   left: 0;

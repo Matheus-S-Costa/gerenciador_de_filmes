@@ -6,57 +6,168 @@ import { MovieItemDetail, MoviesService } from '../services/MoviesService';
 import { useTranslation } from 'react-i18next';
 
 export const MovieDetail: React.FC = () => {
-    const [movie, setMovie] = useState<MovieItemDetail>();
-    const { id } = useParams<{ id: string }>();
-    const { t } = useTranslation(['movie']);
+  const [movie, setMovie] = useState<MovieItemDetail>();
+  const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation(['movie']);
 
-    useEffect(() => {
-        MoviesService.getById(id).then(({ data }) => setMovie(data));
-    }, [id]);
+  useEffect(() => {
+    MoviesService.getById(id).then(({ data }) => setMovie(data));
+  }, [id]);
 
-    return (
-        <Container>
-            <TitleContainer>{movie?.Title}</TitleContainer>
-            <MovieSpecs>
-                <PosterContainer>
-                    <img src={movie?.Poster} alt="" />
-                </PosterContainer>
-                <div>
-                    <p>
-                        <strong>{t('year')}: </strong> {movie?.Year}
-                    </p>
-                    <p>
-                        <strong>{t('type')}: </strong> {movie?.Type}
-                    </p>
-                    <p>
-                        <strong>{t('released')}: </strong> {movie?.Released}
-                    </p>
-                    <p>
-                        <strong>{t('genre')}: </strong> {movie?.Genre}
-                    </p>
-                    <p>
-                        <strong>{t('director')}: </strong> {movie?.Director}
-                    </p>
-                    <p>
-                        <strong>{t('imdbRating')}: </strong> {movie?.imdbRating}
-                    </p>
-                    <p>
-                        <strong>{t('description')}: </strong> {movie?.Plot}
-                    </p>
-                </div>
-            </MovieSpecs>
-        </Container>
-    );
+  return (
+    <Container>
+      <Page>
+        <TitleContainer>{movie?.Title}</TitleContainer>
+
+        <MovieSpecs>
+          <PosterContainer>
+            <Poster
+              src={movie?.Poster}
+              alt={movie?.Title ? `${movie.Title} poster` : 'Poster'}
+              loading="lazy"
+            />
+          </PosterContainer>
+
+          <Specs>
+            <SpecRow>
+              <SpecLabel>{t('year')}:</SpecLabel>
+              <SpecValue>{movie?.Year || '-'}</SpecValue>
+            </SpecRow>
+
+            <SpecRow>
+              <SpecLabel>{t('type')}:</SpecLabel>
+              <SpecValue>{movie?.Type || '-'}</SpecValue>
+            </SpecRow>
+
+            <SpecRow>
+              <SpecLabel>{t('released')}:</SpecLabel>
+              <SpecValue>{movie?.Released || '-'}</SpecValue>
+            </SpecRow>
+
+            <SpecRow>
+              <SpecLabel>{t('genre')}:</SpecLabel>
+              <SpecValue>{movie?.Genre || '-'}</SpecValue>
+            </SpecRow>
+
+            <SpecRow>
+              <SpecLabel>{t('director')}:</SpecLabel>
+              <SpecValue>{movie?.Director || '-'}</SpecValue>
+            </SpecRow>
+
+            <SpecRow>
+              <SpecLabel>{t('imdbRating')}:</SpecLabel>
+              <SpecValue>{movie?.imdbRating || '-'}</SpecValue>
+            </SpecRow>
+
+            <Description>
+              <SpecLabelBlock>{t('description')}:</SpecLabelBlock>
+              <p>{movie?.Plot || '-'}</p>
+            </Description>
+          </Specs>
+        </MovieSpecs>
+      </Page>
+    </Container>
+  );
 };
 
-const MovieSpecs = styled.div`
-    display: flex;
-`;
+const Page = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 12px 28px;
 
-const PosterContainer = styled.div`
-    margin-right: 50px;
+  @media (min-width: 768px) {
+    padding: 26px 16px 40px;
+  }
 `;
 
 const TitleContainer = styled.h1`
-    text-align: center;
+  margin: 6px 0 16px;
+  text-align: center;
+  font-size: clamp(20px, 4.8vw, 34px);
+  line-height: 1.15;
+`;
+
+const MovieSpecs = styled.section`
+  display: grid;
+  gap: 16px;
+
+  /* Mobile: uma coluna */
+  grid-template-columns: 1fr;
+
+  /* Desktop: duas colunas */
+  @media (min-width: 768px) {
+    gap: 22px;
+    grid-template-columns: 360px 1fr;
+    align-items: start;
+  }
+`;
+
+const PosterContainer = styled.div`
+  width: 100%;
+`;
+
+const Poster = styled.img`
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  object-fit: cover;
+  aspect-ratio: 2 / 3;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+
+  @media (min-width: 768px) {
+    position: sticky;
+    top: 14px;
+  }
+`;
+
+const Specs = styled.div`
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 14px 14px 10px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+
+  @media (min-width: 768px) {
+    padding: 18px 18px 12px;
+  }
+`;
+
+const SpecRow = styled.div`
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 130px 1fr;
+  }
+`;
+
+const SpecLabel = styled.div`
+  font-weight: 700;
+  opacity: 0.9;
+`;
+
+const SpecValue = styled.div`
+  opacity: 0.85;
+  line-height: 1.35;
+  word-break: break-word;
+`;
+
+const Description = styled.div`
+  padding: 12px 0 4px;
+
+  p {
+    margin: 8px 0 0;
+    opacity: 0.85;
+    line-height: 1.55;
+  }
+`;
+
+const SpecLabelBlock = styled.div`
+  font-weight: 800;
+  opacity: 0.95;
 `;
