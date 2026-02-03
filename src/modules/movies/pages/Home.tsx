@@ -58,94 +58,107 @@ export const Home: React.FC = () => {
 
   return (
     <Page>
-      <TopBar>
-        <Brand>
-          <LogoDot />
-          <div>
-            <Title>My Movies</Title>
-            <Subtitle>{t('subtitle', { defaultValue: 'Encontre filmes e salve seus favoritos.' })}</Subtitle>
-          </div>
-        </Brand>
+        <Content>
+        <TopBar>
+            <Brand>
+            <LogoDot />
+            <div>
+                <Title>My Movies</Title>
+                <Subtitle>{t('subtitle', { defaultValue: 'Encontre filmes e salve seus favoritos.' })}</Subtitle>
+            </div>
+            </Brand>
 
-        <RightInfo>
-          <Pill title="Favoritos">
-            ❤️ <b>{likedMovies?.length ?? 0}</b>
-          </Pill>
-        </RightInfo>
-      </TopBar>
+            <RightInfo>
+            <Pill title="Favoritos">
+                ❤️ <b>{likedMovies?.length ?? 0}</b>
+            </Pill>
+            </RightInfo>
+        </TopBar>
 
-      <Card>
-        <SearchBar onFormSubmit={handleSearch} />
-      </Card>
+        <Card>
+            <SearchBar onFormSubmit={handleSearch} />
+        </Card>
 
-      <SectionHeader>
-        <h2>
-          {loading
-            ? t('loading', { defaultValue: 'Buscando…' })
-            : !hasSearched
-              ? t('start', { defaultValue: 'Comece pesquisando um filme' })
-              : movies.length > 0
-                ? t('results', { defaultValue: 'Resultados' })
-                : t('notFound', { defaultValue: 'Nenhum resultado encontrado' })}
-        </h2>
+        <SectionHeader>
+            <h2>
+            {loading
+                ? t('loading', { defaultValue: 'Buscando…' })
+                : !hasSearched
+                ? t('start', { defaultValue: 'Comece pesquisando um filme' })
+                : movies.length > 0
+                    ? t('results', { defaultValue: 'Resultados' })
+                    : t('notFound', { defaultValue: 'Nenhum resultado encontrado' })}
+            </h2>
 
-        {hasSearched && !loading && (
-          <SmallText>
-            {movies.length > 0
-              ? t('count', { defaultValue: '{{count}} itens', count: movies.length })
-              : errorMsg
-                ? errorMsg
-                : t('tryAnother', { defaultValue: 'Tente outro termo (ex.: Batman, Matrix, Avatar).' })}
-          </SmallText>
+            {hasSearched && !loading && (
+            <SmallText>
+                {movies.length > 0
+                ? t('count', { defaultValue: '{{count}} itens', count: movies.length })
+                : errorMsg
+                    ? errorMsg
+                    : t('tryAnother', { defaultValue: 'Tente outro termo (ex.: Batman, Matrix, Avatar).' })}
+            </SmallText>
+            )}
+        </SectionHeader>
+
+        {loading ? (
+            <GridContainer>
+            {Array.from({ length: 8 }).map((_, i) => (
+                <SkeletonCard key={i} />
+            ))}
+            </GridContainer>
+        ) : movies.length > 0 ? (
+            <GridContainer>
+            {movies.map((movie: MovieItem) => (
+                <MovieThumb
+                key={movie.imdbID}
+                movie={movie}
+                like={() => handleLikeMovie(movie)}
+                unlike={() => handleUnlikeMovie(movie)}
+                likedByUser={isLikedByUser(movie)}
+                />
+            ))}
+            </GridContainer>
+        ) : (
+            <EmptyState>
+            <EmptyIcon>🎬</EmptyIcon>
+            <EmptyTitle>
+                {!hasSearched
+                ? t('emptyTitle', { defaultValue: 'Procure por um filme para ver resultados.' })
+                : t('emptyNoResults', { defaultValue: 'Não encontramos nada por aqui.' })}
+            </EmptyTitle>
+            <EmptySubtitle>
+                {!hasSearched
+                ? t('emptyHint', { defaultValue: 'Dica: use termos em inglês para melhorar as buscas.' })
+                : t('emptyHint2', { defaultValue: 'Tente variar o nome ou remover palavras extras.' })}
+            </EmptySubtitle>
+            </EmptyState>
         )}
-      </SectionHeader>
-
-      {loading ? (
-        <GridContainer>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </GridContainer>
-      ) : movies.length > 0 ? (
-        <GridContainer>
-          {movies.map((movie: MovieItem) => (
-            <MovieThumb
-              key={movie.imdbID}
-              movie={movie}
-              like={() => handleLikeMovie(movie)}
-              unlike={() => handleUnlikeMovie(movie)}
-              likedByUser={isLikedByUser(movie)}
-            />
-          ))}
-        </GridContainer>
-      ) : (
-        <EmptyState>
-          <EmptyIcon>🎬</EmptyIcon>
-          <EmptyTitle>
-            {!hasSearched
-              ? t('emptyTitle', { defaultValue: 'Procure por um filme para ver resultados.' })
-              : t('emptyNoResults', { defaultValue: 'Não encontramos nada por aqui.' })}
-          </EmptyTitle>
-          <EmptySubtitle>
-            {!hasSearched
-              ? t('emptyHint', { defaultValue: 'Dica: use termos em inglês para melhorar as buscas.' })
-              : t('emptyHint2', { defaultValue: 'Tente variar o nome ou remover palavras extras.' })}
-          </EmptySubtitle>
-        </EmptyState>
-      )}
+      </Content>
     </Page>
   );
 };
 
 const Page = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  align-items: center;
+
   padding: 16px 12px 28px;
+  overflow-x: hidden; /* 🔥 blindagem */
 
   @media (min-width: 768px) {
     padding: 24px 16px 40px;
   }
 `;
+
+
+const Content = styled.div`
+  width: 100%;
+  max-width: 1200px;
+`;
+
 
 const TopBar = styled.div`
   display: flex;
@@ -221,7 +234,7 @@ const Card = styled.div`
 
 
 const SectionHeader = styled.div`
-  margin: 18px 2px 10px;
+  margin: 18px 0 10px;
 
   h2 {
     margin: 0;
