@@ -1,0 +1,12 @@
+{
+    "like": "like",
+    "unlike": "unlike",
+    "year": "Year",
+    "type": "Type",
+    "released": "Released",
+    "genre": "Genre",
+    "director": "Director",
+    "imdbRating": "IMDB Rating",
+    "description": "Description",
+    "notFound": "No movie was found"
+}

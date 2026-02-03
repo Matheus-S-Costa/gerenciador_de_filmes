@@ -1,0 +1,12 @@
+{
+    "like": "Curtir",
+    "unlike": "Descurtir",
+    "year": "Ano",
+    "type": "Tipo",
+    "released": "Lançamento",
+    "genre": "Gênero",
+    "director": "Diretor(a)",
+    "imdbRating": "Nota IMDB",
+    "description": "Descrição",
+    "notFound": "Nenhum filme encontrado"
+}
