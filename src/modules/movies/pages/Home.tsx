@@ -140,16 +140,27 @@ export const Home: React.FC = () => {
 const Page = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 28px 16px 40px;
+  padding: 16px 12px 28px;
+
+  @media (min-width: 768px) {
+    padding: 24px 16px 40px;
+  }
 `;
 
 const TopBar = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
+  flex-direction: column;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: flex-end;
+  }
 `;
+
 
 const Brand = styled.div`
   display: flex;
@@ -167,13 +178,14 @@ const LogoDot = styled.div`
 
 const Title = styled.h1`
   margin: 0;
-  font-size: 28px;
+  font-size: clamp(22px, 4.2vw, 30px);
   line-height: 1.1;
 `;
 
 const Subtitle = styled.p`
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   opacity: 0.75;
+  font-size: clamp(13px, 2.8vw, 15px);
 `;
 
 const RightInfo = styled.div`
@@ -197,10 +209,16 @@ const Card = styled.div`
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  padding: 14px;
+  padding: 12px;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
+
+  @media (min-width: 768px) {
+    padding: 14px;
+    margin-bottom: 18px;
+  }
 `;
+
 
 const SectionHeader = styled.div`
   margin: 18px 2px 10px;
