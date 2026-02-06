@@ -5,7 +5,7 @@ export const GridContainer = styled.div`
   margin: 0 auto;
 
   display: grid;
-  gap: 10px;                 /* menos espaçamento */
+  gap: 10px;                 
   align-items: stretch;
 
   /* Mobile: 2 colunas bem bonitas */
@@ -23,7 +23,7 @@ export const GridContainer = styled.div`
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 14px;               /* mantém “justinho” no desktop */
+    gap: 14px;              
   }
 
   @media (min-width: 1280px) {

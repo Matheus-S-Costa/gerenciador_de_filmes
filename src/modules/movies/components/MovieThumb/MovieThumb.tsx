@@ -133,7 +133,6 @@ const InfoWrapper = styled.div`
     }
   }
 
-  /* melhora área de toque do botão */
   button {
     width: 100%;
     min-height: 44px;
