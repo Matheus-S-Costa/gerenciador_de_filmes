@@ -5,23 +5,29 @@ export const GridContainer = styled.div`
   margin: 0 auto;
 
   display: grid;
-  gap: 12px;
+  gap: 10px;                 /* menos espaçamento */
+  align-items: stretch;
 
-  /* Mobile: cards menores / 2 colunas quando couber */
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  justify-content: center;
+  /* Mobile: 2 colunas bem bonitas */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  /* Desktop: aumenta o mínimo -> cria mais colunas -> cards não esticam */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
   @media (min-width: 1024px) {
-    gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;               /* mantém “justinho” no desktop */
   }
 
   @media (min-width: 1280px) {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
   }
 `;

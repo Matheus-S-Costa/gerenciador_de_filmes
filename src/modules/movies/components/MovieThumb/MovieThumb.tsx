@@ -64,10 +64,15 @@ const MobieThumbWrapper = styled.article`
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: #fff;
 
-  /* dá um “card feel” */
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
   transform: translateZ(0);
   transition: transform 160ms ease, box-shadow 160ms ease;
+
+  /*  Desktop: limita o tamanho do card (e da imagem) */
+  @media (min-width: 1024px) {
+    max-width: 260px;
+    justify-self: center; /* centraliza no grid */
+  }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -76,6 +81,7 @@ const MobieThumbWrapper = styled.article`
     }
   }
 `;
+
 
 const MoviePic = styled.img`
   width: 100%;
