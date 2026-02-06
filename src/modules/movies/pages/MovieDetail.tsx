@@ -11,8 +11,61 @@ export const MovieDetail: React.FC = () => {
   const { t } = useTranslation(['movie']);
 
   useEffect(() => {
-    MoviesService.getById(id).then(({ data }) => setMovie(data));
+    const controller = new AbortController();
+
+    async function loadMovie() {
+      try {
+        const { data } = await MoviesService.getById(id);
+
+        setMovie(data);
+
+        const plot = data?.Plot;
+
+        if (!plot || plot === 'N/A') return;
+
+        try {
+          const translatedPlot = await translateToPt(plot, controller.signal);
+          setMovie(prev => (prev ? { ...prev, Plot: translatedPlot } : prev));
+        } catch (err) {
+          console.error('[translateToPt] falhou:', err);
+        }
+      } catch (err) {
+        console.error('[getById] falhou:', err);
+      }
+    }
+
+    loadMovie();
+
+    return () => controller.abort();
   }, [id]);
+
+  async function translateToPt(text: string, signal?: AbortSignal): Promise<string> {
+    const res = await fetch('https://libretranslate.de/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal,
+      body: JSON.stringify({
+        q: text,
+        source: 'en',
+        target: 'pt',
+        format: 'text',
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      throw new Error(`HTTP ${res.status} - ${res.statusText} - ${body}`);
+    }
+
+    const data: any = await res.json();
+
+    if (!data?.translatedText) {
+      throw new Error('Resposta sem translatedText');
+    }
+
+    return data.translatedText;
+  }
+
 
   return (
     <Container>
